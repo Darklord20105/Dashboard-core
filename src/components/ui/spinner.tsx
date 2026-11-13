@@ -1,4 +1,4 @@
-import { cn } from "@/src/lib/utils"
+import { cn } from "@/lib/utils"
 import { LoaderIcon, type LucideProps } from "lucide-react"
  
 function Spinner({ className, ...props }: LucideProps) {

@@ -1,6 +1,6 @@
 import { ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react'
 
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<'nav'>) {
   return <nav aria-label='breadcrumb' data-slot='breadcrumb' className={className} {...props} />

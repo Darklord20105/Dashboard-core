@@ -4,12 +4,12 @@
 import { useMemo, useState } from 'react'
 
 // Component Imports
-import { Card, CardContent } from '@/src/components/ui/card'
-import { ActivityTimeline } from '@/src/views/admin/view/activity-timeline'
-import { ProjectsDatatable } from '@/src/views/admin/view/projects-datatable'
+import { Card, CardContent } from '@/components/ui/card'
+import { ActivityTimeline } from '@/views/admin/view/activity-timeline'
+import { ProjectsDatatable } from '@/views/admin/view/projects-datatable'
 
 // Hook Imports
-import { usePagination } from '@/src/hooks/use-pagination'
+import { usePagination } from '@/hooks/use-pagination'
 
 const PAGE_SIZE = 5
 

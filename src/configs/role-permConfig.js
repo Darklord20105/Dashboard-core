@@ -45,16 +45,18 @@ export const DEFAULT_ROLE_PERMISSIONS = {
 export const ROUTING_AUTH_CONFIG = {
   protectedRoutes: [
 
-    { path: "/dashboard/orders", minRole: "client", requiredPermission: "" },
+    { path: "/dashboard", minRole: "client", requiredPermission: "" },
     { path: "/pages/user-settings", minRole: "owner", requiredPermission: "" },
     { path: "/pages/user-profile", minRole: "owner", requiredPermission: "" },
 
     // Example: Only Owners/Admins usually see billing, but a trusted user with "view:billing" can enter!
-    { path: "/admin/create-new-users", minRole: "admin", requiredPermission: "" },
-    { path: "/admin/update-permissions", minRole: "admin", requiredPermission: "" },
-    { path: "/pages/auth/register", minRole: "admin", requiredPermission: "" }
+
+    { path: "/admin/admin-list-user", minRole: "admin", requiredPermission:""},
+    { path: "/admin/admin-view-user/:id", minRole: "admin", requiredPermission: "" },
+    // { path: "/admin/update-permissions", minRole: "admin", requiredPermission: "" },
+    // { path: "/pages/auth/register", minRole: "admin", requiredPermission: "" }
   ],
-  loginRedirect: "/pages/auth/login",
-  unauthorizedRedirect: "/connection-down"
+  loginRedirect: "auth/login",
+  // unauthorizedRedirect: "connection-down"
 };
 

@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // Component Imports
 import { AddEditUserSheet } from './dialogs/add-edit-user-sheet'
@@ -10,19 +10,51 @@ import { UserViewTabs } from './user-view-tabs'
 
 // Third-party Imports
 import { toast } from 'sonner'
-import { successToast, errorToast } from "@/src/components/ui/sonner";
+import { successToast, errorToast } from "@/components/ui/sonner";
+import { TableLoader } from "@/components/shared/TableState/TableLoader"
+import { TableError } from '@/components/shared/TableState/TableError'
 
 // Actions
-import { adminUpdateUserDataAction } from '@/src/app/(pages)/admin/admin-view-user/[id]/actions'
+import { useQuery } from "@tanstack/react-query";
+import { authClient } from "@/lib/auth-client"
+import { adminUpdateUserDataAction } from '@/app/(pages)/admin/admin-view-user/[id]/actions'
 
 
-const UserViewApp = ({ initialUser }) => {
-  if (initialUser.error) {
-    return <span>{initialUser.error}</span>
-  }
-  // console.log(initialUser)
+const UserViewApp = ({ id }) => {
+  const {
+    data: user,
+    error,
+    refetch,
+    isLoading,    // True ONLY on the very first mount with no data
+    isRefetching, // True ONLY during manual .refetch() calls
+    isFetching    // True during ANY network request (initial + updates)
+  } = useQuery({
+    queryKey: [`users-view-${id}`],
+    queryFn: async () => {
+      // await delay(2000)  // to test loaders
+      const response = await authClient.admin.getUser({
+        query: { id: id }
+      })
+
+      if (response.error) {
+        throw new Error(response.error || 'Failed to fetch users');
+      }
+
+      return response.data;
+    },
+    structuralSharing: false, // to force refetch even if data is the same
+
+  });
+
+
+  console.log(user, 'user aata ' + id);
+  console.log(error, 'error user aata');
+
   const [isEditSheetOpen, setIsEditSheetOpen] = useState(false)
-  const { user } = initialUser;
+
+  useEffect(() => {
+    refetch()
+  }, [refetch])
 
   const handleUpdateUserData = async (id, data) => {
     console.log(id, data)
@@ -34,7 +66,7 @@ const UserViewApp = ({ initialUser }) => {
     }
 
     const adminUpdateUserDataPromise = async () => {
-      try{
+      try {
         const result = await adminUpdateUserDataAction({
           userId: id,
           name: data.name,
@@ -50,7 +82,7 @@ const UserViewApp = ({ initialUser }) => {
 
         return (result?.message || "User Data update Success.");
 
-      } catch(error) {
+      } catch (error) {
         throw new Error(error);
       }
     };
@@ -67,22 +99,32 @@ const UserViewApp = ({ initialUser }) => {
     });
   }
 
+  if (!user) {
+    return (<>Loading User ...</>)
+  }
 
   return (
     <>
-      <div className='relative grid grid-cols-1 gap-6 lg:grid-cols-[350px_minmax(0,1fr)]'>
-        <UserViewLeftPanel user={user} onEdit={() => setIsEditSheetOpen(true)} />
-        <UserViewTabs user={user} />
-      </div>
+      {isFetching ? <TableLoader /> : (
+        error ? <TableError error={error} refetch={refetch} /> : (
+          <>
+            <div className='relative grid grid-cols-1 gap-6 lg:grid-cols-[350px_minmax(0,1fr)]'>
+              <UserViewLeftPanel user={user} onEdit={() => setIsEditSheetOpen(true)} />
+              <UserViewTabs user={user} />
+            </div>
+            <AddEditUserSheet
+              mode={isEditSheetOpen ? 'edit' : null}
+              user={user}
+              onClose={() => setIsEditSheetOpen(false)}
+              onAdd={() => { }}
+              onEdit={handleUpdateUserData}
+              formStateFunction={setIsEditSheetOpen}
+            />
+          </>
+        )
+      )}
 
-      <AddEditUserSheet
-        mode={isEditSheetOpen ? 'edit' : null}
-        user={user}
-        onClose={() => setIsEditSheetOpen(false)}
-        onAdd={() => {}}
-        onEdit={handleUpdateUserData}
-        formStateFunction={setIsEditSheetOpen}
-      />
+
     </>
   )
 }

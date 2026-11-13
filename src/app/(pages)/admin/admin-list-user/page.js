@@ -1,5 +1,5 @@
 // Component Imports
-import UserListApp from '@/src/views/admin/list'
+import UserListApp from '@/views/admin/list'
 
 const UsersPage = async () => {
   return <UserListApp />

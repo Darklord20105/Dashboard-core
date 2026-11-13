@@ -5,10 +5,10 @@ import { toast } from "sonner"; // or react-hot-toast
 import { Trash2Icon } from "lucide-react"; // Nice clean trashcan icon
 
 // components
-import { DropdownMenuItem } from "@/src/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 // Actions
-import { deleteUserAction } from "@/src/app/(pages)/admin/admin-list-user/actions"; // Adjust path to actions file
+import { deleteUserAction } from "@/app/(pages)/admin/admin-list-user/actions"; // Adjust path to actions file
 
 export default function TableDeleteButton({ user, isDropDown = false }) {
   const queryClient = useQueryClient();

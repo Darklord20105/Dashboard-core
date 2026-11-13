@@ -19,9 +19,9 @@ import {
 } from 'lucide-react'
 
 // Component Imports
-import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar'
-import { Badge } from '@/src/components/ui/badge'
-import { Button } from '@/src/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,16 +29,16 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/src/components/ui/dropdown-menu'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/src/components/ui/tooltip'
+} from '@/components/ui/dropdown-menu'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 // Config Imports
-import { getInitialsFromName } from '@/src/configs/mailConfig'
+import { getInitialsFromName } from '@/configs/mailConfig'
 
 // Util Imports
-import { cn } from '@/src/lib/utils'
-import TableDeleteButton from '@/src/views/admin/list/table-buttons/table-delete-button';
-import TableBanToggleButton from '@/src/views/admin/list/table-buttons/table-ban-toggle-button'
+import { cn } from '@/lib/utils'
+import TableDeleteButton from '@/views/admin/list/table-buttons/table-delete-button';
+import TableBanToggleButton from '@/views/admin/list/table-buttons/table-ban-toggle-button'
 
 const ROLE_ICONS = {
   admin: <UserRoundIcon className='size-4 text-green-600 dark:text-green-400' />,
@@ -194,7 +194,13 @@ export const userTableColumns = [
     id: 'joinedDate',
     header: 'Joined Date',
     accessorKey: 'joinedDate',
-    cell: ({ row }) => <span>{format(new Date(row.original.createdAt), 'dd MMM yyyy')}</span>,
+    cell: ({ row }) => {
+      return (
+        <span>
+      {format(new Date(row.original.createdAt), 'dd MMM yyyy')}
+      </span>
+      )
+    },
     enableSorting: true
   },
   {

@@ -5,13 +5,13 @@ import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-tabl
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 
 // Component Imports
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 // Util Imports
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 import { userTableColumns } from './user-table-columns'
 
-import TableNoData from '@/src/components/shared/TableState/TableNoData'
+import TableNoData from '@/components/shared/TableState/TableNoData'
 
 export function UserTable({ paginatedUsers, totalPages, sorting, onSortingChange }) {
   const sortingState = sorting ? [sorting] : []

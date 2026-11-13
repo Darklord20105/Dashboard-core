@@ -1,135 +1,111 @@
 // src/lib/auth.ts
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { admin } from "better-auth/plugins"; // Imported admin plugin for role-based auth
+import { admin } from "better-auth/plugins";
 import { connectDB } from "./mongoose";
 import { createAccessControl } from "better-auth/plugins/access";
 import mongoose from "mongoose";
 
 const accessControl = createAccessControl({});
 
+// Use a more robust singleton pattern
+let authInstance = null;
+let sessionCache = new Map(); // Add session cache
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export async function getAuthInstance() {
-  // 1. Force Mongoose to verify network state immediately on invocation
-  await connectDB();
-
-  // 2. SAFETY SWITCH: If the network just recovered or dropped, check the actual readyState.
-  // 0 = disconnected. If disconnected, wipe out any old broken cached instances.
-  if (mongoose.connection.readyState === 0) {
-    globalThis.betterAuthInstance = undefined;
-    throw new Error("auth.js: Database connection is currently offline. Cannot initialize authentication.");
+  let isInitializing = false
+  // Return cached instance if available
+  if (authInstance) {
+    return authInstance;
   }
 
-  // 3. Return the cached instance ONLY if the database path is confirmed healthy
-  if (globalThis.betterAuthInstance) {
-    return globalThis.betterAuthInstance;
+  // Prevent multiple simultaneous initializations
+  if (isInitializing) {
+    // Wait for initialization to complete
+    while (isInitializing) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    return authInstance;
   }
 
-  const nativeClient = mongoose.connection.getClient();
-  const nativeDb = mongoose.connection.db;
+  isInitializing = true;
 
-  if (!nativeClient || !nativeDb) {
-    throw new Error("auth.js: Mongoose connection failed to expose native database access.");
-  }
+  try {
+    // 1. Force Mongoose to verify network state immediately on invocation
+    await connectDB();
 
-  globalThis.betterAuthInstance = betterAuth({
-    // 🔗 Pass the native db and client directly using the core built-in helper
-    database: mongodbAdapter(nativeDb, {
-      client: nativeClient
-    }),
-    emailAndPassword: {
-      enabled: true,
-      disableSignUp: true, //  It tells your application that the registration feature is completely shut down.
-    },
-    user: {
-      additionalFields: {
-        role: {
-          type: "string",
-          defaultValue: "client",
-          input: false
+    // 2. SAFETY SWITCH: If the network just recovered or dropped, check the actual readyState.
+    if (mongoose.connection.readyState === 0) {
+      throw new Error("auth.js: Database connection is currently offline. Cannot initialize authentication.");
+    }
+
+    // 3. Return the cached instance ONLY if the database path is confirmed healthy
+    if (globalThis.betterAuthInstance) {
+      authInstance = globalThis.betterAuthInstance;
+      isInitializing = false;
+      return authInstance;
+    }
+
+    const nativeClient = mongoose.connection.getClient();
+    const nativeDb = mongoose.connection.db;
+
+    if (!nativeClient || !nativeDb) {
+      throw new Error("auth.js: Mongoose connection failed to expose native database access.");
+    }
+
+    authInstance = betterAuth({
+      // 🔗 Pass the native db and client directly using the core built-in helper
+      database: mongodbAdapter(nativeDb, {
+        client: nativeClient
+      }),
+      emailAndPassword: {
+        enabled: true,
+        disableSignUp: true,
+      },
+      user: {
+        additionalFields: {
+          role: {
+            type: "string",
+            defaultValue: "client",
+            input: false
+          }
         }
-      }
-    },
-    // 👑 Enable the admin plugin to activate roles ("client", "admin", etc.)
-    plugins: [
-      admin({
-        // accessControl,
-        // for later when permissions is required in project
-        // roles: {
-        //   admin: accessControl.newRole({}),
-        //   client: accessControl.newRole({})
-        // },
-        defaultRole: "client"
-      })
-    ]
-  });
+      },
+      plugins: [
+        admin({
+          defaultRole: "client"
+        })
+      ],
+      csrf: {
+        enabled: true,
+        // You can also customize the CSRF token settings
+        cookie: {
+          name: "better-auth.csrf-token",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict"
+        },
+      },
+      trustedOrigins: async () => {
+        const origins = ["http://localhost:3000"];
 
-  return globalThis.betterAuthInstance;
-}
+        if (process.env.NEXT_PUBLIC_APP_URL) {
+          origins.push(process.env.NEXT_PUBLIC_APP_URL);
+        } else if (process.env.VERCEL_URL) {
+          origins.push(`https://${process.env.VERCEL_URL}`);
+        }
 
-export const auth = new Proxy({}, {
-  get(target, prop, receiver) {
-    // Intercepts any call to auth.* (like auth.api) and dynamically ensures instance safety
-    return Reflect.get(globalThis.betterAuthInstance || {}, prop, receiver);
+        return origins;
+      },
+    });
+
+    globalThis.betterAuthInstance = authInstance;
+    isInitializing = false;
+    return authInstance;
+
+  } catch (error) {
+    isInitializing = false;
+    throw error;
   }
-})
-
-// to craete an access control spreadsheet
-// import { createAccessControl } from "better-auth/plugins/access";
-
-// // 1. Map out all possible resources and actions in your app
-// const statement = {
-//   posts: ["create", "read", "update", "delete"],
-//   billing: ["view", "manage"],
-//   settings: ["read", "write"]
-// } as const;
-
-// const ac = createAccessControl(statement);
-
-// // 2. Create a restricted role (e.g., standard user)
-// const userRole = ac.newRole({
-//   posts: ["create", "read"], // Can only create and read posts
-//   billing: ["view"],         // Can only view billing
-// });
-
-// // 3. Create a powerful role (e.g., admin)
-// const adminRole = ac.newRole({
-//   posts: ["create", "read", "update", "delete"], // Full control
-//   billing: ["view", "manage"],
-//   settings: ["read", "write"]
-// });
-
-
-// to authorize something with access controll we do this in server calls
-// // Better Auth handles the evaluation under the hood
-// const hasAccess = auth.plugins.admin.ac.authorize(session.user.role, {
-//   resource: "posts",
-//   action: "delete"
-// });
-
-// an example
-// import { auth } from "./auth"; // Your Better Auth instance
-
-// export async function updatePostHandler(req: Request) {
-//   // 1. Get the current active session
-//   const session = await auth.api.getSession({ headers: req.headers });
-  
-//   if (!session) {
-//     return new Response("Unauthorized", { status: 401 });
-//   }
-
-//   // 2. Extract the user's role string from the session (e.g., "user" or "admin")
-//   const userRoleString = session.user.role; 
-
-//   // 3. Use the Access Control matrix to authorize the action
-//   const totalAccess = auth.plugins.admin.ac; // Access your AC instance
-//   const canUpdate = totalAccess.authorize(userRoleString, {
-//     resource: "posts",
-//     action: "update"
-//   });
-
-//   if (!canUpdate) {
-//     return new Response("Forbidden: You cannot update posts", { status: 403 });
-//   }
-
-  // 4. Proceed with your Mongoose update query safely...
-// }
+}

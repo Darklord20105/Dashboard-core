@@ -1,9 +1,9 @@
 'use client'
 
-import { useTheme } from '@teispace/next-themes'
+import { useTheme } from 'next-themes'
 import { toast , Toaster as Sonner, type ToasterProps } from 'sonner'
 import { CircleCheckIcon, CheckCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from 'lucide-react'
-import { Alert, AlertTitle } from '@/src/components/ui/alert'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = 'system' } = useTheme()
@@ -36,8 +36,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
     />
   )
 }
-
-function successToast(message){
+function successToast(message: any){
   toast.custom(() => (
       <Alert className='border-green-600 text-green-600 sm:w-122 dark:border-green-400 dark:text-green-400 *:[svg]:row-span-1'>
         <CheckCheckIcon />
@@ -45,7 +44,7 @@ function successToast(message){
       </Alert>
     ))
 }
-function errorToast(err){
+function errorToast(err: any){
   toast.custom(() => (
       <Alert className='border-destructive text-destructive sm:w-122 dark:border-destructive dark:text-destructive *:[svg]:row-span-1'>
         <OctagonXIcon />
@@ -54,4 +53,4 @@ function errorToast(err){
     ))
 }
 
-export { Toaster, successToast, errorToast}
+export { Toaster, successToast, errorToast }

@@ -7,10 +7,10 @@ import { useState } from 'react'
 import { MailIcon, MonitorIcon, SmartphoneIcon } from 'lucide-react'
 
 // Component Imports
-import { Button } from '@/src/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
-import { Switch } from '@/src/components/ui/switch'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export function NotificationsTab({ user }) {
   const [settings, setSettings] = useState(user.notificationSettings ?? [])

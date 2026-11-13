@@ -1,7 +1,7 @@
-// src/app/admin/admin-list-user/actions.js
+// app/admin/admin-list-user/actions.js
 'use server'
 
-import { getAuthInstance } from "@/src/lib/auth";
+import { getAuthInstance } from "@/lib/auth";
 import { headers } from "next/headers";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";

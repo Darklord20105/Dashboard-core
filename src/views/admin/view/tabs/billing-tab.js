@@ -5,14 +5,14 @@ import { format } from 'date-fns'
 import { CheckIcon, DownloadIcon } from 'lucide-react'
 
 // Component Imports
-import { Badge } from '@/src/components/ui/badge'
-import { Button } from '@/src/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card'
-import { Progress } from '@/src/components/ui/progress'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 // Util Imports
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 const INVOICE_STATUS_STYLES = {
   paid: 'bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400',

@@ -2,8 +2,8 @@
 import { FileIcon, FileSpreadsheetIcon, FileTextIcon, ImageIcon } from 'lucide-react'
 
 // Component Imports
-import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@/src/components/ui/avatar'
-import { Badge } from '@/src/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import {
   Timeline,
   TimelineContent,
@@ -11,10 +11,10 @@ import {
   TimelineHeading,
   TimelineItem,
   TimelineLine
-} from '@/src/components/ui/timeline'
+} from '@/components/ui/timeline'
 
 // Util Imports
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 const ATTACHMENT_FILE_ICONS = {
   pdf: FileTextIcon,

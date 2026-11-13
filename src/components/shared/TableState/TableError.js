@@ -5,9 +5,9 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/src/components/ui/empty"
+} from "@/components/ui/empty"
 import { OctagonXIcon } from 'lucide-react'
-import { Button } from "@/src/components/ui/button"
+import { Button } from "@/components/ui/button"
 
 
 export function TableError({ error, refetch }) {

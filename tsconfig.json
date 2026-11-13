@@ -1,54 +1,48 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    // "downlevelIteration": true,
+    "allowJs": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "incremental": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
       }
     ],
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext"
   },
   "include": [
+    "eslint.config.mjs",
+    "next.config.ts",
+    "postcss.config.mjs",
     "next-env.d.ts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts",
-
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js",
-    
-    "./@/components/**/*.{js,ts,jsx,tsx,mdx}",
-
-    "src/**/*.{js,ts,jsx,tsx,mdx}",
-    "src/**.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}", // For Next.js App Router
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",  
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next"
   ]
 }

@@ -5,14 +5,14 @@ import { toast } from "sonner"; // or react-hot-toast
 import { BanIcon, ShieldCheckIcon } from "lucide-react";
 
 // Util Imports
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 // components
-import { Button } from "@/src/components/ui/button";
-import { DropdownMenuItem } from "@/src/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 // Actions
-import { banUserAction, unbanUserAction } from "@/src/app/(pages)/admin/admin-list-user/actions"; // Adjust path
+import { banUserAction, unbanUserAction } from "@/app/(pages)/admin/admin-list-user/actions"; // Adjust path
 
 
 export default function TableBanToggleButton({ user, isButton = false }) {
@@ -35,6 +35,8 @@ export default function TableBanToggleButton({ user, isButton = false }) {
           throw new Error(response.error);
         }
         queryClient.invalidateQueries({ queryKey: ['users-list'] });
+        queryClient.invalidateQueries({ queryKey: [`users-view-${user.id}`] });
+
       } catch (err) {
         throw new Error(err);
       }

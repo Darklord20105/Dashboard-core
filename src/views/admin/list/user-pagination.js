@@ -4,11 +4,11 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 // Component Imports
-import { Button } from '@/src/components/ui/button'
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/src/components/ui/pagination'
+import { Button } from '@/components/ui/button'
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination'
 
 // Hook Imports
-import { usePagination } from '@/src/hooks/use-pagination'
+import { usePagination } from '@/hooks/use-pagination'
 
 export function UserPagination({
   showingFrom,

@@ -5,8 +5,8 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/src/components/ui/empty"
-import { Spinner } from "@/src/components/ui/spinner"
+} from "@/components/ui/empty"
+import { Spinner } from "@/components/ui/spinner"
 
 export function TableLoader() {
   return (

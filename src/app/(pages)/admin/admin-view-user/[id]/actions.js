@@ -1,5 +1,6 @@
-// src/app/admin/view/actions.js
-'use server' // 🌟 CRITICAL: This tells Next.js this function only runs securely on the server
+// app/admin/view/actions.js
+'use server' 
+// 🌟 CRITICAL: This tells Next.js this function only runs securely on the server
 
 // basic user schema will mark fields that can be modified only
 // banned: false     ok
@@ -7,7 +8,7 @@
 // permissions: [] ok
 // role: "admin" ok
 
-import { getAuthInstance } from "@/src/lib/auth";
+import { getAuthInstance } from "@/lib/auth";
 import { headers } from "next/headers";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";

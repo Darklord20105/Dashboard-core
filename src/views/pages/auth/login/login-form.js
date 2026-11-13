@@ -1,6 +1,6 @@
 'use client'
 
-// Rect Import
+// React Import
 import { useState } from 'react'
 
 // Next Imports
@@ -12,7 +12,7 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 //import the better auth client
-import { signIn } from "@/src/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 
 // import zod validator
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,14 +20,13 @@ import { Controller, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 // Components Import
-import { Button } from '@/src/components/ui/button'
-import { Checkbox } from '@/src/components/ui/checkbox'
-import { Field, FieldGroup, FieldLabel, FieldError } from '@/src/components/ui/field'
-import { Input } from '@/src/components/ui/input'
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/src/components/ui/input-group'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 
-import { errorToast, successToast } from "@/src/components/ui/sonner";
-
+import { errorToast, successToast } from "@/components/ui/sonner";
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email({ message: 'Please enter a valid email address.' }),
@@ -35,8 +34,6 @@ const loginSchema = z.object({
 })
 
 const LoginForm = () => {
-  const router = useRouter();
-  const [isLockdown, setIsLockdown] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   // 2. Initialize useForm with your Zod resolver
@@ -44,7 +41,7 @@ const LoginForm = () => {
     control,
     handleSubmit,
     setError, // 👈 Crucial tool for mapping API/Database errors
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -53,15 +50,16 @@ const LoginForm = () => {
     }
   });
 
+  console.log(process.env.NEXT_PUBLIC_APP_URL, "url in login form" )
+
   const onSubmit = async (values) => {
     console.log(values)
-    setIsLockdown(true);
 
     const loginPromise = async () => {
       const { data, error: authError } = await signIn.email({
         email: values.email,
         password: values.password,
-        callbackURL: "/dashboard/orders",
+        callbackURL: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/`,
       });
 
       if (authError) {
@@ -73,7 +71,6 @@ const LoginForm = () => {
           });
           throw new Error(authError.message || "Database is offline.");
         }
-        setIsLockdown(false);
         // 2. Reject the promise so sonner knows it failed, passing along the error message
         return new Error(authError.message || "Login failed.");
       }
@@ -82,17 +79,16 @@ const LoginForm = () => {
       return data;
     };
 
-
     // ⚡ This triggers the loader toast and hooks into the promise lifecycle
-    await toast.promise(loginPromise(), {
+    toast.promise(loginPromise(), {
       loading: "Logging in to your account...",
       success: () => {
-        const message = "Account Login success! Welcome 🎉 Redirecting ..."
-        router.push("/dashboard/orders");
-        return successToast(message)
+        const message = "Account Login success! Welcome 🎉 Redirecting ...";
+        return successToast(message);
       },
       error: (err) => {
-        return errorToast(err)
+        // console.log(err.message)
+        return errorToast(err.message || err);
       },
     });
 
@@ -168,8 +164,8 @@ const LoginForm = () => {
           </Link>
         </div>
         <Field>
-          <Button className='w-full' type='submit' disabled={isLockdown}>
-            {isLockdown ? "Processing..." : "Sign in"}
+          <Button className='w-full' type='submit' disabled={isSubmitting}>
+            {isSubmitting ? "Processing..." : "Sign in"}
           </Button>
         </Field>
       </FieldGroup>

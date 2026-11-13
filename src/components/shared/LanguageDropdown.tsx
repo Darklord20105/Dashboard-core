@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import type { ReactElement } from 'react'
 
 import {
   DropdownMenu,
@@ -8,9 +9,15 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger
-} from '@/src/components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 
-const LanguageDropdown = ({ defaultOpen, align, trigger }) => {
+type Props = {
+  trigger: ReactElement
+  defaultOpen?: boolean
+  align?: 'start' | 'center' | 'end'
+}
+
+const LanguageDropdown = ({ defaultOpen, align, trigger }: Props) => {
   const [language, setLanguage] = useState('english')
 
   return (

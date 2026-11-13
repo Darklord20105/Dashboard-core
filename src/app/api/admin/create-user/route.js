@@ -1,5 +1,5 @@
-// src/app/api/admin/create-user/route.js
-import { getAuthInstance } from "@/src/lib/auth";
+// app/api/admin/create-user/route.js
+import { getAuthInstance } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 

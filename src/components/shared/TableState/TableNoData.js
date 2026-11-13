@@ -1,6 +1,6 @@
 import { ArrowUpRightIcon,  FolderCode } from "lucide-react"
 
-import { Button } from "@/src/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Empty,
   EmptyContent,
@@ -8,7 +8,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/src/components/ui/empty"
+} from "@/components/ui/empty"
 
 export default function TableNoData() {
   return (

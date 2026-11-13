@@ -9,17 +9,17 @@ import {
 } from 'lucide-react'
 
 // Component Imports
-import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar'
-import { Badge } from '@/src/components/ui/badge'
-import { Button } from '@/src/components/ui/button'
-import { Card, CardContent } from '@/src/components/ui/card'
-import { Separator } from '@/src/components/ui/separator'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 // Config Imports
-import { getInitialsFromName } from '@/src/configs/mailConfig'
+import { getInitialsFromName } from '@/configs/mailConfig'
 
 // Util Imports
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 import TableBanToggleButton from '../list/table-buttons/table-ban-toggle-button'
 
 const STATUS_DOT_STYLES = {
@@ -54,7 +54,7 @@ const formatCompactNumber = (value) => {
 export function UserViewLeftPanel({ user, onEdit }) {
   // console.log(user, 'user view left panel')
   const detailRows = [
-    { label: 'Username', value: user.username ?? '—' },
+    { label: 'Username', value: user.name ?? '—' },
     { label: 'Email', value: user.email },
     { label: 'isVerified', value: user.emailVerified, verifySatus: true },
     { label: 'Status', value: user.banned, isStatus: true },
@@ -67,13 +67,15 @@ export function UserViewLeftPanel({ user, onEdit }) {
 
   const status = user.banned;
   let statusState = status ? "inactive" : "active"
+
+  console.log(user, 'aaaaaaaaaaaaaaaaaa')
   return (
     <Card className='overflow-y-auto lg:sticky lg:top-20 lg:h-[calc(100dvh-7.5rem)]'>
       <CardContent className='space-y-6 pt-6'>
         <div className='flex flex-col items-center text-center'>
           <Avatar className='size-24'>
             {user.avatar ? <AvatarImage src={user.avatar} alt={user.name} /> : null}
-            <AvatarFallback className='text-2xl'>{getInitialsFromName(user.name)}</AvatarFallback>
+            <AvatarFallback className='text-2xl'>{user.name && getInitialsFromName(user.name)}</AvatarFallback>
           </Avatar>
           <h2 className='mt-4 line-clamp-4 text-xl font-semibold'>{user.name}</h2>
           <Badge variant='secondary' className='mt-2'>

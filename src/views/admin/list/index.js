@@ -1,10 +1,12 @@
 'use client'
+
+// React Imports
 import { useEffect, useState } from "react"
 
 // Component Imports
-import { Card } from '@/src/components/ui/card'
-import { TableLoader } from '@/src/components/shared/TableState/TableLoader'
-import { TableError } from '@/src/components/shared/TableState/TableError'
+import { Card } from '@/components/ui/card'
+import { TableLoader } from '@/components/shared/TableState/TableLoader'
+import { TableError } from '@/components/shared/TableState/TableError'
 
 import { UserPagination } from './user-pagination'
 import { UserTable } from './user-table'
@@ -14,13 +16,13 @@ import { AddEditUserSheet } from './dialogs/add-user-sheet'
 
 // utils imports
 import { useQuery } from "@tanstack/react-query";
-import { authClient } from "@/src/lib/auth-client"
-import { addNewUserAction } from "@/src/app/(pages)/admin/admin-list-user/actions"
+import { authClient } from "@/lib/auth-client"
+import { addNewUserAction } from "@/app/(pages)/admin/admin-list-user/actions"
 import { toast } from 'sonner'
-import { errorToast, successToast } from "@/src/components/ui/sonner";
+import { errorToast, successToast } from "@/components/ui/sonner";
 
 // Hook Imports
-import { useUserApp } from '@/src/hooks/use-user-app'
+import { useUserApp } from '@/hooks/use-user-app'
 
 
 const UserListApp = () => {
@@ -89,7 +91,6 @@ const UserListApp = () => {
       },
     });
 
-    // addNewUserAction()
   }
   const [isEditSheetOpen, setIsEditSheetOpen] = useState(false);
   useEffect(() => {

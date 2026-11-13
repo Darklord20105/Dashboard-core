@@ -1,6 +1,6 @@
 // Component Imports
-import { Label } from '@/src/components/ui/label'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 const ROLES = ['admin', 'owner', 'maintainer', 'client']
 const STATUSES = ['Active', 'Pending', 'Suspended', 'Inactive']
