@@ -20,17 +20,17 @@ function redirectToConnectionError(request) {
   return NextResponse.redirect(url);
 }
 
-  const matchRoute = (pathname, routePath) => {
-    const routeParts = pathname.split('/');
-    const patternParts = routePath.split('/');
+const matchRoute = (pathname, routePath) => {
+  const routeParts = pathname.split('/');
+  const patternParts = routePath.split('/');
 
-    return (
-      routeParts.length === patternParts.length &&
-      patternParts.every((part, index) =>
-        part.startsWith(':') || part === routeParts[index]
-      )
-    );
-  };
+  return (
+    routeParts.length === patternParts.length &&
+    patternParts.every((part, index) =>
+      part.startsWith(':') || part === routeParts[index]
+    )
+  );
+};
 
 export default async function proxy(request) {
   const { pathname } = request.nextUrl;
@@ -41,7 +41,9 @@ export default async function proxy(request) {
 
   if (!matchedRoute) return NextResponse.next();
 
-  const sessionToken = request.cookies.get("better-auth.session_token");
+  const sessionToken =
+    request.cookies.get("__Secure-better-auth.session_token") ||
+    request.cookies.get("better-auth.session_token");
 
   if (!sessionToken) {
     return redirectToLogin(request)

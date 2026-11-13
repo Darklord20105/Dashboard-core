@@ -152,16 +152,16 @@ const LoginForm = () => {
         />
         {/* Remember Me and Forgot Password */}
         <div className='flex items-center justify-between gap-y-2'>
-          <Field orientation='horizontal' className='flex items-center gap-2'>
+          {/* <Field orientation='horizontal' className='flex items-center gap-2'>
             <Checkbox id='rememberMe' />
             <FieldLabel htmlFor='rememberMe' className='text-muted-foreground'>
               {' '}
               Remember Me
             </FieldLabel>
-          </Field>
-          <Link href='/pages/auth/forgot-password' className='text-base text-nowrap hover:underline'>
+          </Field> */}
+          {/* <Link href='/pages/auth/forgot-password' className='text-base text-nowrap hover:underline'>
             Forgot Password?
-          </Link>
+          </Link> */}
         </div>
         <Field>
           <Button className='w-full' type='submit' disabled={isSubmitting}>
