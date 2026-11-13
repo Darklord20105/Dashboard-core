@@ -17,47 +17,20 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 
 const ROLES = ['owner', 'maintainer', 'client']
-// const PLANS = ['Free','Basic', 'Team', 'Enterprise']
-const STATUSES = ['active', 'pending', 'suspended', 'inactive']
+const STATUSES = ['active', 'inactive']
 
-const COUNTRIES = [
-  'United States',
-  'United Kingdom',
-  'Canada',
-  'Australia',
-  'Germany',
-  'France',
-  'India',
-  'Japan',
-  'Brazil',
-  'Netherlands',
-  'Singapore',
-  'Spain',
-  'Italy',
-  'Mexico',
-  'South Korea'
-]
 
 const userFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  // email: z.string().min(1, 'Email is required').email('Enter a valid email'),
-  // contact: z.string().optional(),
-  // company: z.string().optional(),
-  // country: z.string().optional(),
   role: z.enum(['admin', 'owner', 'maintainer', 'client']),
-  // plan: z.enum(['Basic', 'Team', 'Enterprise']),
-  status: z.enum(['active', 'pending', 'suspended', 'inactive'])
+  status: z.enum(['active', 'inactive'])
 })
 
 
 const defaultValues = {
   name: '',
   email: '',
-  // contact: '',
-  // company: '',
-  // country: '',
-  role: 'Subscriber',
-  // plan: 'Basic',
+  role: 'client',
   status: 'Active'
 }
 
@@ -74,10 +47,6 @@ export function AddEditUserSheet({ mode, user, onClose, onAdd, onEdit, formState
         email: user.email,
         role: user.role,
         status: user.banned ? "inactive":"active"
-        // contact: user.contact ?? '',
-        // company: user.company ?? '',
-        // country: user.country ?? '',
-        // plan: user.plan,
       })
 
       return
@@ -93,11 +62,6 @@ export function AddEditUserSheet({ mode, user, onClose, onAdd, onEdit, formState
       name: values.name,
       role: values.role,
       status: values.status
-      // email: values.email,
-      // contact: values.contact || "",
-      // company: values.company || "",
-      // country: values.country || "",
-      // plan: values.plan,
     }
 
     if (mode === 'add') {

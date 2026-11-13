@@ -46,8 +46,8 @@ export const ROUTING_AUTH_CONFIG = {
   protectedRoutes: [
 
     { path: "/dashboard", minRole: "client", requiredPermission: "" },
-    { path: "/pages/user-settings", minRole: "owner", requiredPermission: "" },
-    { path: "/pages/user-profile", minRole: "owner", requiredPermission: "" },
+    { path: "/pages/user-settings", minRole: "client", requiredPermission: "" },
+    { path: "/pages/user-profile", minRole: "client", requiredPermission: "" },
 
     // Example: Only Owners/Admins usually see billing, but a trusted user with "view:billing" can enter!
 

@@ -20,27 +20,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 
-
 const ROLES = ['owner', 'maintainer', 'client']
-// const PLANS = ['Free','Basic', 'Team', 'Enterprise']
-
-const COUNTRIES = [
-  'United States',
-  'United Kingdom',
-  'Canada',
-  'Australia',
-  'Germany',
-  'France',
-  'India',
-  'Japan',
-  'Brazil',
-  'Netherlands',
-  'Singapore',
-  'Spain',
-  'Italy',
-  'Mexico',
-  'South Korea'
-]
 
 const userFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

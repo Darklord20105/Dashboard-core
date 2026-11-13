@@ -37,25 +37,20 @@ import { getInitialsFromName } from '@/configs/mailConfig'
 
 // Util Imports
 import { cn } from '@/lib/utils'
-import TableDeleteButton from '@/views/admin/list/table-buttons/table-delete-button';
-import TableBanToggleButton from '@/views/admin/list/table-buttons/table-ban-toggle-button'
+import {TableDeleteDropdown, ManageDeleteDialog} from '@/views/admin/list/table-buttons/table-delete-button';
+import { TableBanToggleDropdown } from '@/views/admin/list/table-buttons/table-ban-toggle-button'
 
 const ROLE_ICONS = {
   admin: <UserRoundIcon className='size-4 text-green-600 dark:text-green-400' />,
-  // owner: <BrushIcon className='text-chart-2 size-4' />,
-  owner: <CrownIcon className='text-chart-5 size-4' />,
-  maintainer: <PencilRulerIcon className='text-chart-3 size-4' />,
-  client: <PencilLineIcon className='text-chart-1 size-4' />
+  owner: <CrownIcon className='text-red-600 size-4' />,
+  maintainer: <PencilRulerIcon className='text-amber-600 size-4' />,
+  client: <PencilLineIcon className='text-blue-600 size-4' />
 }
 
 const STATUS_STYLES = {
   active:
     'bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5',
-  pending:
-    'bg-amber-600/10 text-amber-600 focus-visible:ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-400 dark:focus-visible:ring-amber-400/40 [a&]:hover:bg-amber-600/5 dark:[a&]:hover:bg-amber-400/5',
-  suspended:
-    'bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive',
-  inactive:
+   inactive:
     'bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive'
 }
 
@@ -83,7 +78,7 @@ function UserRowActions({ user }) {
 
       {user.role === "admin" ? <></> : (
         <Tooltip>
-          <TooltipTrigger render={<TableDeleteButton user={user} />}>
+          <TooltipTrigger render={<ManageDeleteDialog user={user} />}>
             <Trash2Icon className='size-4.5' />
           </TooltipTrigger>
           <TooltipContent>
@@ -102,16 +97,12 @@ function UserRowActions({ user }) {
                 <PencilIcon className='size-4' />
                 Edit User
               </DropdownMenuItem>
-
-              <DropdownMenuSeparator />
-              <TableBanToggleButton user={user} />
               <DropdownMenuSeparator />
 
-              {/* <DropdownMenuItem variant='destructive'>
-              <Trash2Icon className='size-4' />
-              Delete
-            </DropdownMenuItem> */}
-              <TableDeleteButton user={user} isDropDown={true} />
+              <TableBanToggleDropdown user={user} />
+              <DropdownMenuSeparator />
+
+              <TableDeleteDropdown user={user} />
 
             </DropdownMenuGroup>
           </DropdownMenuContent>
@@ -197,8 +188,8 @@ export const userTableColumns = [
     cell: ({ row }) => {
       return (
         <span>
-      {format(new Date(row.original.createdAt), 'dd MMM yyyy')}
-      </span>
+          {format(new Date(row.original.createdAt), 'dd MMM yyyy')}
+        </span>
       )
     },
     enableSorting: true

@@ -15,12 +15,13 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
+import { ManageBanDialog } from '@/views/admin/list/table-buttons/table-ban-toggle-button'
+
 // Config Imports
 import { getInitialsFromName } from '@/configs/mailConfig'
 
 // Util Imports
 import { cn } from '@/lib/utils'
-import TableBanToggleButton from '../list/table-buttons/table-ban-toggle-button'
 
 const STATUS_DOT_STYLES = {
   active: 'bg-green-500',
@@ -31,10 +32,9 @@ const STATUS_DOT_STYLES = {
 
 const ROLE_ICONS = {
   admin: <UserRoundIcon className='size-4 text-green-600 dark:text-green-400' />,
-  // owner: <BrushIcon className='text-chart-2 size-4' />,
-  owner: <CrownIcon className='text-chart-5 size-4' />,
-  maintainer: <PencilRulerIcon className='text-chart-3 size-4' />,
-  client: <PencilLineIcon className='text-chart-1 size-4' />
+  owner: <CrownIcon className='text-red-600 size-4' />,
+  maintainer: <PencilRulerIcon className='text-amber-600 size-4' />,
+  client: <PencilLineIcon className='text-blue-600 size-4' />
 }
 
 const formatCompactNumber = (value) => {
@@ -122,7 +122,7 @@ export function UserViewLeftPanel({ user, onEdit }) {
 
         <div className='flex gap-2 max-sm:flex-col'>
           {user.role === "admin" ? <></> : <Button className='sm:flex-1' onClick={onEdit}>Edit</Button>}
-          {user.role === "admin" ? <></> : <TableBanToggleButton user={user} isButton={true} />}
+          {user.role === "admin" ? <></> : <ManageBanDialog user={user} />}
         </div>
       </CardContent>
     </Card>
