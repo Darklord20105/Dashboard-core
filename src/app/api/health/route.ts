@@ -45,7 +45,7 @@ export async function GET() {
       }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Health check failed:", error.message);
 
     return NextResponse.json(

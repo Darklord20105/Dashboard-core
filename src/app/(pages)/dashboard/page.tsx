@@ -1,7 +1,3 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-
 import { TruckIcon, TriangleAlertIcon, CalendarX2Icon } from 'lucide-react'
 
 import { Card } from '@/components/ui/card'
@@ -307,8 +303,6 @@ const transactionData: Item[] = [
 ]
 
 export default async function OrdersDashboard  ()  {
-  // const session = await auth.api.getSession({ headers: await headers() });
-  // if (!session) redirect("/pages/auth/login");
 
   return (
     <div className='grid grid-cols-2 gap-6 lg:grid-cols-3'>
